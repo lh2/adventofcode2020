@@ -1,9 +1,9 @@
 #!/bin/sh -e
 hasinput() {
 	if [ "$1" == 1 ]; then
-		[ ! -f "test/$day-$2.txt" ] && echo 1>&2 no input for day $day task $2 && return 1
+		[ ! -f "test/$day-$2.txt" ] && echo 1>&2 no test data for day $day task $2 && return 1
 	else
-		[ ! -f "input/$day.txt" ] && echo 1>&2 no input for day $day && return 1
+		[ ! -f "input/$day.txt" ] && ./getinput.sh "$day"
 	fi
 	return 0
 }
