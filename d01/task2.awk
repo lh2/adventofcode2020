@@ -1,16 +1,12 @@
 {
 	numsc++
 	nums[numsc]=$1
-}
-END {
+	numsm[$1]=1
 	for (i=1; i<=numsc; i++) {
-		for (j=1; j<=numsc; j++) {
-			for (k=1; k<=numsc; k++) {
-				if (i != j && j != k && i != k && nums[i]+nums[j]+nums[k] == 2020) {
-					print nums[i]*nums[j]*nums[k]
-					exit
-				}
-			}
+		t=2020-$1-nums[i]
+		if (numsm[t]) {
+			print nums[i]*$1*t
+			exit
 		}
 	}
 }
