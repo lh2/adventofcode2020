@@ -7,7 +7,7 @@ END {
 		for (j=1; j<=numsc; j++) {
 			if (i != j && nums[i]+nums[j] == 2020) {
 				print nums[i]*nums[j]
-				next
+				exit
 			}
 		}
 	}
