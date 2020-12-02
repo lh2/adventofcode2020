@@ -4,17 +4,8 @@ BEGIN {
 {
 	split($1, p, " ")
 	split(p[1], n, "-")
-	min=n[1]
-	max=n[2]
-	char=p[2]
-	nc=0
-	split($2, chars, "")
-	for (i=0; i<=length($2); i++) {
-		if (chars[i] == char) {
-			nc++
-		}
-	}
-	if (nc >= min && nc <= max) {
+	gsub("[^" p[2] "]", "", $2)
+	if (length($2) >= n[1] && length($2) <= n[2]) {
 		matching++
 	}
 }
