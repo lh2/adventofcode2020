@@ -17,15 +17,16 @@
 			sc=int(sc+hc+1)
 		}
 	}
-	seats[sr, sc]=1
+	seats[sr*8+sc]=1
 }
 END {
 	for (r=0; r < 128; r++) {
 		for (c=0; c < 8; c++) {
-			if (!((r, c) in seats) &&
-			    (((r, c-1) in seats) || c == 0) &&
-			    (((r, c+1) in seats) || c == 7)) {
-				print r*8+c
+			id=r*8+c
+			if (!(id in seats) &&
+			    (id+1 in seats) &&
+			    (id-1 in seats)) {
+				print id
 				exit
 			}
 		}
