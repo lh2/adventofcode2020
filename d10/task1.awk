@@ -1,19 +1,17 @@
 BEGIN {
 	last=0
-	max=0
 }
 {
-	if ($1 > max) {
-		max=$1
-	}
-	diff=$1-last
-	last=$1
-	if (diff > 3) {
-		stop=1
-	}
+	max=$1
 	if (stop) {
 		next
 	}
+
+	diff=$1-last
+	if (diff > 3) {
+		stop=1
+	}
+	last=$1
 
 	if (diff == 1) {
 		diff1++
