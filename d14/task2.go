@@ -12,7 +12,7 @@ import (
 const ADDR_LEN = 36
 
 var mask []rune
-var addrs = make(map[int64][ADDR_LEN]rune)
+var addrs = make(map[int64]int64)
 
 func process(cmd, val string) {
 	if cmd == "mask" {
@@ -33,15 +33,6 @@ func process(cmd, val string) {
 	}
 
 	idRunes := []rune(fmt.Sprintf(fmt.Sprintf("%%0%ds", ADDR_LEN), strconv.FormatInt(id, 2)))
-	runes := []rune(fmt.Sprintf(fmt.Sprintf("%%0%ds", ADDR_LEN), strconv.FormatInt(vali, 2)))
-	var addr [ADDR_LEN]rune
-	if a, ok := addrs[id]; ok {
-		addr = a
-	}
-	for i := 0; i < ADDR_LEN; i++ {
-		addr[i] = runes[i]
-	}
-
 	pb := 0
 	for _, v := range mask {
 		if v == 'X' {
@@ -68,7 +59,7 @@ func process(cmd, val string) {
 		if err != nil {
 			panic(fmt.Sprintf("parse id runes %v", err))
 		}
-		addrs[id] = addr
+		addrs[id] = vali
 	}
 }
 
@@ -84,11 +75,7 @@ func main() {
 
 	var sum int64
 	for _, v := range addrs {
-		iv, err := strconv.ParseInt(string(v[0:]), 2, 64)
-		if err != nil {
-			panic(err)
-		}
-		sum += iv
+		sum += v
 	}
 	fmt.Printf("%d\n", sum)
 }
