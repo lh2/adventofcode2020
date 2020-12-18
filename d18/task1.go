@@ -86,15 +86,6 @@ func (s *TokenScanner) Peek() Token {
 	return s.Tokens[s.i]
 }
 
-func (s *TokenScanner) Peek2() Token {
-	if s.i+1 >= len(s.Tokens) {
-		return Token{
-			Type: TokenType(-1),
-		}
-	}
-	return s.Tokens[s.i+1]
-}
-
 func (s *TokenScanner) Next() Token {
 	t := s.Tokens[s.i]
 	s.i++
@@ -153,47 +144,14 @@ func lex(line string) []Token {
 	}
 }
 
-func parseBinary(s *TokenScanner) *BinaryExpr {
-	expr := BinaryExpr{}
-	a := s.Next()
-	if !s.Scan() {
-		panic(UnexpectedEndOfInput)
-	}
-	expr.a = &UnaryExpr{
-		a: a.ValueInt,
-	}
-	expr.op = s.Next().ValueRune
-	if !s.Scan() {
-		panic(UnexpectedEndOfInput)
-	}
-	b := s.Next()
-	switch b.Type {
-	case TokenTypeNumber:
-		expr.b = &UnaryExpr{
-			a: b.ValueInt,
-		}
-	case TokenTypeParenOpen:
-		expr.b = parseGroup(s)
-	default:
-		panic(fmt.Errorf("Unexpected token %v in binary expression", b))
-	}
-	return &expr
-
-}
-
 func parseGroup(s *TokenScanner) Expr {
 	var expr *BinaryExpr
 Loop:
 	for s.Scan() {
 		switch s.Peek().Type {
 		case TokenTypeNumber:
-			var e Expr
-			if s.Peek2().Type == TokenTypeOp {
-				e = parseBinary(s)
-			} else {
-				e = &UnaryExpr{
-					a: s.Next().ValueInt,
-				}
+			e := &UnaryExpr{
+				a: s.Next().ValueInt,
 			}
 			if expr == nil {
 				expr = &BinaryExpr{
