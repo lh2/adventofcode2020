@@ -165,14 +165,6 @@ Loop:
 			}
 		case TokenTypeOp:
 			expr.op = s.Next().ValueRune
-			if s.Peek().Type == TokenTypeNumber {
-				expr.b = &UnaryExpr{
-					a: s.Next().ValueInt,
-				}
-				expr = &BinaryExpr{
-					a: expr,
-				}
-			}
 		case TokenTypeParenOpen:
 			s.Next()
 			e := parseGroup(s)
